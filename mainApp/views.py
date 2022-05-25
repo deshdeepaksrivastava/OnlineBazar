@@ -173,8 +173,7 @@ def updateprofilepage(request):
             user.state = request.POST.get('state')
             if(request.FILES.get("pic")):
                 if(user.pic):
-                    # os.remove("media/"+str(user.pic))
-                    pass
+                    os.remove("media/"+str(user.pic))
                 user.pic = request.FILES.get('pic')
             user.save()
             return HttpResponseRedirect("/profile/")
