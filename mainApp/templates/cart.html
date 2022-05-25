@@ -1,0 +1,81 @@
+{% extends 'index.html' %}
+{% load static %}
+{% load cart %}
+
+{% block title %}
+<title>Shopping Cart|OnlineBazar</title>
+{% endblock %}
+{% block body %}
+
+<h5 class="background text-light text-center p-2 mt-3">CART Section </h5>
+
+<div class="table-responsive">
+    <table class="table table-hover table-striped table-light">
+        <tr>
+            <th></th>
+            <th>Name</th>
+            <th>color</th>
+            <th>Size</th>
+            <th>Price</th>
+            <th></th>
+            <th>QTY</th>
+            <th></th>
+            <th>Total</th>
+            <th></th>
+            <th></th>
+
+        </tr>
+        {% for i in Cart %}
+
+        <tr>
+            {% if request|cartproductimage:i %}
+            <td><img src="{{request|cartproductimage:i}}" height="100px" width="100px"></td>
+            {% else %}
+            <td><img src="{% static 'images/nopic.jpg' %}" height="100px" width="100px"></td>
+            {% endif %}
+            <td>{{request|cartproductname:i}}</td>
+            <td>{{request|cartcolor:i}}</td>
+            <td>{{request|cartsize:i}}</td>
+            <td>&#8377;{{request|cartproductprice:i}}</td>
+            <td><a href="/update-cart/{{i}}/-1/" class="btn text-primary"><i class="material-icons">remove</i></a></td>
+            <td>{{request|cartQTY:i}}</td>
+            <td><a href="/update-cart/{{i}}/1/" class="btn text-primary"><i class="material-icons">add</i></a></td>
+            <td>{{request|carttotal:i}}</td>
+            <td><button class="btn" onclick="fun('{{i}}')" class="btn"><i
+                        class="material-icons">delete_forever</i></button></td>
+            <td></td>
+        </tr>
+        {% endfor %}
+    </table>
+</div>
+<div class="row">
+    <div class="col-md-6 col-sm-12 col-12"></div>
+    <div class="col-md-6 col-sm-12 col-12">
+        <table class="table table-hover table-striped ">
+            <tr>
+                <th>Total amount</th>
+                <td>&#8377;{{Total}}</td>
+            </tr>
+            <tr>
+                <th>Shipping amount</th>
+                <td>&#8377;{{Shipping}}</td>
+            </tr>
+            <tr>
+                <th>Final amount</th>
+                <td>&#8377;{{Final}}</td>
+            </tr>
+            <tr>
+                <th colspan="2"><a href="/checkout/" class="btn background w-50 text-light">Checkout</a></th> 
+
+            </tr>
+            
+        </table>
+    </div>
+</div>
+<script>
+    function fun(num) {
+        if (confirm("Are you sure to delete the item?"))
+            window.open(`/delete-cart/${num}/`)
+    }
+</script>
+{% endblock %}
